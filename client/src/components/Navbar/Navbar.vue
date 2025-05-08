@@ -1,4 +1,7 @@
 <script setup>
+import Search from './Search/Search.vue';
+import Quicklinks from './Quicklinks/Quicklinks.vue';
+
 </script>
 
 <template>
@@ -13,4 +16,6 @@
       <RouterLink to="/login" class="px-2">Login</RouterLink>
     </div>
   </nav>
+  <Search />
+  <Quicklinks />
 </template>

@@ -1,7 +1,7 @@
 const link = "https://www.dnd5eapi.co/api/2014";
 
 export const apiData = async (query, filter) => {
-let updatedLink = `${link}/${filter}/`;
+let updatedLink = `${link}/${filter}`;
   if(query) {
     updatedLink = `${updatedLink}/?name=${query}`
   }

@@ -3,7 +3,6 @@
 import { watch, ref } from "vue";
 import { useRoute } from "vue-router";
 import { apiData } from "@/utils/API";
-import burnt_paper from "@/assets/img/burnt_paper.jpg";
 const route = useRoute();
 const data = ref(null);
 const loading = ref(true);
