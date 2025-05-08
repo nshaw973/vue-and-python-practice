@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.burn_paper_bg {
+    background-image: url('./img/burnt_paper.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: none;
+}
