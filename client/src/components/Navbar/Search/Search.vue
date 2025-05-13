@@ -3,27 +3,28 @@
 /* Imports */
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { filters } from "./searchUtils";
 /* Values */
 const router = useRouter();
 const query = ref("");
-const selectedOption = ref(null);
-const options = [
-  { id: 1, name: "spells" },
-  { id: 2, name: "monsters" },
-  { id: 3, name: "items" },
-];
+const selectedOption = ref("");
+
 /* Functions */
 const performSearch = () => {
   if (!selectedOption) return;
   router.push({
     path: "/search/results",
     query: {
-      q: query.value,
       filter: selectedOption.value,
+      q: query.value,
     },
   });
   query.value = "";
   selectedOption.value = null;
+};
+
+const updateSelection = (value) => {
+  selectedOption.value = selectedOption.value === value ? '' : value;  // Toggle selection
 };
 </script>
 
@@ -48,8 +49,19 @@ const performSearch = () => {
         ></button>
       </section>
       <!-- Filter -->
-      <section>
-        
+      <section class="pl-2">
+        <h1>Filters:</h1>
+        <div v-for="filter in filters" class="text-sm">
+          <input
+            type="checkbox"
+            :id="filter.value"
+            :name="filter.name"
+            :value="filter.value"
+            :checked="selectedOption === filter.value"
+            @change="updateSelection(filter.value)"
+          />
+          <label :for="filter.value">{{ filter.name }}</label>
+        </div>
       </section>
     </form>
   </section>
