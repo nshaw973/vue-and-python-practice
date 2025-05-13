@@ -63,6 +63,10 @@ const updateSelection = (value) => {
           <label :for="filter.value">{{ filter.name }}</label>
         </div>
       </section>
+      <!-- Sort By -->
+      <section>
+        
+      </section>
     </form>
   </section>
 </template>

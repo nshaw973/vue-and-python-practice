@@ -5,6 +5,7 @@ import { ref } from "vue";
 import Sidebar from "./Sidebar/Sidebar.vue";
 
 const viewSidebar = ref(false);
+const viewNavbar = ref(true);
 const currentView = ref("");
 const options = [
   { name: "Search", route: "/search", i: "pi pi-search" },
@@ -13,6 +14,12 @@ const options = [
   { name: "Settings", route: "/settings", i: "pi-cog" },
 ];
 
+const toggleNavbar = () => {
+  viewNavbar.value = !viewNavbar.value;
+};
+
+
+/* Extra Sidebar */
 const closeSidebar = () => {
   viewSidebar.value = false;
   currentView.value = "";
@@ -30,14 +37,30 @@ const toggleSidebar = (name) => {
 
 <template>
   <!-- Navbar -->
-  <nav class="flex flex-col p-2 text-white bg-slate-950 h-screen w-[150px]">
-    <RouterLink to="/">
-      <img
-        :src="viewSidebar ? logo_sm : logo"
-        class="invert"
-        :class="{ 'w-8 p-1': viewSidebar }"
-      />
-    </RouterLink>
+  <div v-if="!viewNavbar">
+    <button
+      @click="toggleNavbar"
+      class="pi pi-align-justify z-40 fixed bg-slate-600 bg-opacity-75 rounded-r-xl text-white w-fit p-4 mt-4"
+    ></button>
+  </div>
+  <nav
+    v-else
+    class="flex flex-col p-2 fixed text-white bg-slate-950 h-screen w-[150px]"
+  >
+    <div class="flex flex-row">
+      <RouterLink to="/">
+        <img
+          :src="viewSidebar ? logo_sm : logo"
+          class="invert"
+          :class="{ 'w-8 p-1': viewSidebar }"
+        />
+      </RouterLink>
+      <button
+        @click="toggleNavbar"
+        class="pi pi-align-justify m-1 hover:bg-slate-600 p-2 rounded-xl"
+      ></button>
+    </div>
+
     <section v-for="option in options" class="flex flex-col">
       <button
         @click="toggleSidebar(option.name)"
