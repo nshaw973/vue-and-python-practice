@@ -14,7 +14,7 @@ const options = [
 ];
 /* Functions */
 const performSearch = () => {
-  if(!selectedOption) return
+  if (!selectedOption) return;
   router.push({
     path: "/search/results",
     query: {
@@ -22,29 +22,35 @@ const performSearch = () => {
       filter: selectedOption.value,
     },
   });
-  query.value = ''
-  selectedOption.value = null
+  query.value = "";
+  selectedOption.value = null;
 };
 </script>
 
 <!-- Template -->
 <template>
-  <section class="flex flex-row bg-amber-950 py-1">
-    <form @submit.prevent="performSearch" class="m-auto">
-      <select v-model="selectedOption" class="text-black">
-        <option disabled selected>Filter by...</option>
-        <option v-for="option in options" :key="option.id" :value="option.name">
-          {{ option.name }}
-        </option>
-      </select>
-      <input
-        v-model="query"
-        placeholder="Search..."
-        type="text"
-        name="query"
-        id="query"
-      />
-      <button type="submit" class="px-2 bg-slate-500">Search</button>
+  <section class="flex flex-row rounded-xl">
+    <form @submit.prevent="performSearch" class="w-full">
+      <!-- Searchbar -->
+      <section class="flex flex-row p-1">
+        <input
+          v-model="query"
+          placeholder="Search..."
+          type="text"
+          name="query"
+          id="query"
+          class="text-black w-full rounded-l-xl p-1"
+        />
+        <button
+          type="submit"
+          class="pi pi-search p-1 rounded-r-xl bg-white"
+          style="color: black"
+        ></button>
+      </section>
+      <!-- Filter -->
+      <section>
+        
+      </section>
     </form>
   </section>
 </template>

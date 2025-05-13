@@ -9,8 +9,8 @@ const links = [
 </script>
 
 <template>
-  <section class="flex flex-row justify-evenly mx-auto">
-    <div v-for="link in links" class="flex justify-center px-2 w-1/4 m-1">
+  <section class="flex flex-col justify-evenly mx-auto">
+    <div v-for="link in links">
       <RouterLink :to="`/view/${link.id}`" class="underline">{{
         upperCase(link.id)
       }}</RouterLink>
