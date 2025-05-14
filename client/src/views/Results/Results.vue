@@ -5,13 +5,14 @@ import { useRoute } from "vue-router";
 import { apiData } from "@/utils/API";
 const route = useRoute();
 const data = ref(null);
+const subData = ref(null)
 const loading = ref(true);
 
 const fetchResults = async () => {
   loading.value = true;
   data.value = null;
   try {
-    const response = await apiData(route.query.q, route.query.filter);
+    const response = await apiData(route.query.q, route.query.filter, null);
     if (!response.results) {
       data.value = response;
     } else {
@@ -21,10 +22,20 @@ const fetchResults = async () => {
     console.error("Error: ", err);
   } finally {
     loading.value = false;
+    console.log(data.value)
   }
 };
-// Initial fetch
-fetchResults();
+
+const viewItem = async (url) => {
+  try {
+    const response = await apiData(null, null, url)
+    subData.value = response;
+  } catch (err) {
+    throw new Error(`An Error has occurred: ${err}`)
+  } finally {
+    console.log(subData.value)
+  }
+}
 
 // Watch for route query changes
 watch(
@@ -34,35 +45,26 @@ watch(
       fetchResults();
     }
   },
-  { immediate: false }
+  { immediate: true }
 );
 </script>
 
 <template>
-  <section class="flex flex-col w-svw">
-    <h1>Search Results:</h1>
-    <div v-if="data" class="flex flex-wrap justify-center w-full">
-      <!-- More than one Result -->
-      <div v-if="Array.isArray(data)" class="flex flex-wrap justify-center w-full">
-        <div
-          v-for="item in data"
-          class="p-2 m-2 shadow rounded-xl w-1/3 burn_paper_bg"
-        >
-          <h1>{{ item.name }}, Level: {{ item.level }}</h1>
-        </div>
-      </div>
-      <!-- Single Result -->
-      <div v-else class="p-2 m-2 shadow rounded-xl w-1/3 burn_paper_bg">
-        <h1>{{ data.name }}, Level: {{ data.level }}</h1>
-        <h2>{{ data.casting_time }}</h2>
-        <ul>
-          <li>{{ data.range }}</li>
-          <li>
-            <p>{{ data.desc[0] }}</p>
-          </li>
-        </ul>
-      </div>
+  <div class="flex flex-col">
+  <h1>Search Results:</h1>
+  <div v-if="subData">
+    <h1>{{ subData.name }} Spell Level: {{ subData.level }}</h1>
+    <h1>School: {{ subData.school.name }}</h1>
+    <ul class="flex flex-row">
+      <li v-for="cClass in subData.classes" class="mx-2">{{ cClass.name }}</li>
+    </ul>
+  </div>
+  <section class="flex flex-wrap justify-center">
+    <div v-if="loading">Loading...</div>
+    <div v-else-if="data" v-for="item in data" class=" w-1/3 md:w-1/6 p-2 m-2 bg-slate-400">
+      <h1 class="underline font-bold">{{ item.name }}</h1>
+      <button @click="viewItem(item.url)">View More...</button>
     </div>
-    <div v-else-if="loading">Loading...</div>
   </section>
+  </div>
 </template>

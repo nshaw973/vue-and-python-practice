@@ -25,9 +25,15 @@ const router = createRouter({
             component: Login
         },
         {
-            path: '/search/results',
+            path: '/search',
             name: 'Search',
-            component: Results
+            children: [
+                {
+                    path: 'results',
+                    name: 'SearchResults',
+                    component: Results
+                }
+            ]
         },
         {
             path: '/view/:type',
