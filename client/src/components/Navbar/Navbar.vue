@@ -41,7 +41,8 @@ const toggleExtras = (extra) => {
     <!-- Navbar -->
     <div class="flex flex-col p-2 text-white bg-slate-950 h-screen">
       <!-- Home Icon -->
-      <div class="flex justify-center h-10 my-4">
+      <div class="flex justify-center h-10 my-4"
+      @mouseover="closeSidebar">
         <RouterLink to="/">
           <img
             :src="!viewSidebar ? logo_sm : logo"

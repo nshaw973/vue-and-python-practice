@@ -1,6 +1,7 @@
 {
   "name": "client",
   "version": "0.0.0",
+  "proxy": "http://localhost:3001",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "pinia": "^3.0.2",
     "primeicons": "^7.0.0",
     "tailwindcss-animated": "^2.0.0",
     "vue": "^3.5.13",
