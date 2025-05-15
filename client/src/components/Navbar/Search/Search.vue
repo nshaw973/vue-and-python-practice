@@ -40,6 +40,7 @@ const updateSelection = (value) => {
           type="text"
           name="query"
           id="query"
+          autocomplete="off"
           class="text-black w-full rounded-l-xl p-1"
         />
         <button

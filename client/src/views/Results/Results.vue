@@ -1,13 +1,18 @@
 <!-- Script -->
 <script setup>
+/* Imports */
 import { watch, ref } from "vue";
 import { useRoute } from "vue-router";
 import { apiData } from "@/utils/API";
+import { upperCase } from "@/utils";
+
+/* Values */
 const route = useRoute();
 const data = ref(null);
 const subData = ref(null)
 const loading = ref(true);
 
+/* Functions */
 const fetchResults = async () => {
   loading.value = true;
   data.value = null;
@@ -51,7 +56,7 @@ watch(
 
 <template>
   <div class="flex flex-col">
-  <h1>Search Results:</h1>
+  <h1 class="text-xl font-bold">{{ upperCase(route.query.filter) }}</h1>
   <div v-if="subData">
     <h1>{{ subData.name }} Spell Level: {{ subData.level }}</h1>
     <h1>School: {{ subData.school.name }}</h1>
@@ -63,7 +68,6 @@ watch(
     <div v-if="loading">Loading...</div>
     <div v-else-if="data" v-for="item in data" class=" w-1/3 md:w-1/6 p-2 m-2 bg-slate-400">
       <h1 class="underline font-bold">{{ item.name }}</h1>
-      <button @click="viewItem(item.url)">View More...</button>
     </div>
   </section>
   </div>

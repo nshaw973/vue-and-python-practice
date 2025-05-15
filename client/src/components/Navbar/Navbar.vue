@@ -5,19 +5,13 @@ import { ref } from "vue";
 import Sidebar from "./Sidebar/Sidebar.vue";
 
 const viewSidebar = ref(false);
-const viewNavbar = ref(true);
-const currentView = ref("");
+const currentView = ref(null);
 const options = [
   { name: "Search", route: "/search", i: "pi pi-search" },
   { name: "Home", route: "/", i: "pi-home" },
   { name: "Login", route: "/login", i: "pi-user" },
   { name: "Settings", route: "/settings", i: "pi-cog" },
 ];
-
-const toggleNavbar = () => {
-  viewNavbar.value = !viewNavbar.value;
-};
-
 
 /* Extra Sidebar */
 const closeSidebar = () => {
@@ -30,58 +24,55 @@ const toggleSidebar = (name) => {
     closeSidebar();
   } else {
     viewSidebar.value = true;
-    currentView.value = name;
   }
 };
+
+const toggleExtras = (extra) => {
+  currentView.value = extra
+}
 </script>
 
 <template>
-  <!-- Navbar -->
-  <div v-if="!viewNavbar">
-    <button
-      @click="toggleNavbar"
-      class="pi pi-align-justify z-40 fixed bg-slate-600 bg-opacity-75 rounded-r-xl text-white w-fit p-4 mt-4"
-    ></button>
-  </div>
   <nav
-    v-else
-    class="flex flex-col p-2 fixed text-white bg-slate-950 h-screen w-[150px]"
+    @mouseover="toggleSidebar"
+    @mouseleave="closeSidebar"
+    class="z-40 fixed flex flex-row"
   >
-    <div class="flex flex-row">
-      <RouterLink to="/">
-        <img
-          :src="viewSidebar ? logo_sm : logo"
-          class="invert"
-          :class="{ 'w-8 p-1': viewSidebar }"
-        />
-      </RouterLink>
-      <button
-        @click="toggleNavbar"
-        class="pi pi-align-justify m-1 hover:bg-slate-600 p-2 rounded-xl"
-      ></button>
+    <!-- Navbar -->
+    <div class="flex flex-col p-2 text-white bg-slate-950 h-screen">
+      <!-- Home Icon -->
+      <div class="flex justify-center h-10 my-4">
+        <RouterLink to="/">
+          <img
+            :src="!viewSidebar ? logo_sm : logo"
+            class="invert h-full"
+            :class="{ 'h-8': !viewSidebar }"
+          />
+        </RouterLink>
+      </div>
+      <!-- Options -->
+      <section class="flex flex-col border-t-2 w-fit">
+        <div
+          v-for="option in options"
+          @mouseover="toggleExtras(option.name)"
+          class="flex flex-row hover:bg-slate-600 rounded-xl px-2 hover:cursor-pointer"
+        >
+          <i :class="`m-2 pi flex justify-start ${option.i}`"></i>
+          <h1 v-if="viewSidebar" class="m-auto">
+            {{ option.name }}
+          </h1>
+        </div>
+      </section>
     </div>
-
-    <section v-for="option in options" class="flex flex-col">
-      <button
-        @click="toggleSidebar(option.name)"
-        class="flex flex-row hover:bg-slate-600 rounded-xl px-2"
-      >
-        <i :class="`my-2 pi ${option.i}`"></i>
-        <h1 v-if="!viewSidebar" class="m-auto">
-          {{ option.name }}
-        </h1>
-      </button>
+    <section
+      v-if="viewSidebar && currentView"
+      class="flex flex-col h-screen bg-slate-800 text-white w-48 p-2 shadow-xl"
+    >
+      <div class="flex flex-row justify-between w-full">
+        <h1 class="text-xl">{{ currentView }}</h1>
+        <button @click="closeSidebar" class="pi pi-times"></button>
+      </div>
+      <Sidebar :view="currentView" />
     </section>
   </nav>
-  <!-- Sidebar -->
-  <section
-    v-if="viewSidebar"
-    class="flex flex-col h-screen fixed left-[45px] z-40 bg-slate-800 text-white w-48 p-2 shadow-xl"
-  >
-    <div class="flex flex-row justify-between w-full">
-      <h1 class="text-xl">{{ currentView }}</h1>
-      <button @click="closeSidebar" class="pi pi-times"></button>
-    </div>
-    <Sidebar :view="currentView" />
-  </section>
 </template>
